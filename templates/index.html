@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Filmes Cadastrados</h2>
+    <ul>
+        {% for filme in filmes %}
+            <li>{{ filme.titulo }} ({{ filme.ano }}) - {{ filme.genero }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('cadastrar') }}">Adicionar Filme</a>
+{% endblock %}
