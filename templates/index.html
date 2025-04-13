@@ -1,11 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Filmes Cadastrados</h2>
-    <ul>
-        {% for filme in filmes %}
-            <li>{{ filme.titulo }} ({{ filme.ano }}) - {{ filme.genero }}</li>
+    <div class="mb-4">
+        <a href="{{ url_for('adicionar') }}" class="btn btn-primary">➕ Adicionar Review</a>
+    </div>
+
+    <div class="row">
+        {% for review in reviews %}
+        <div class="col-md-6 mb-4">
+            <div class="card shadow">
+                <div class="row g-0">  <!-- Linha para imagem + texto -->
+                    <div class="col-md-4">  <!-- Coluna da imagem -->
+                        <img 
+                            src="{{ review.imagem }}" 
+                            class="img-fluid rounded-start h-100" 
+                            alt="{{ review.filme }}"
+                            style="object-fit: cover;"
+                        >
+                    </div>
+                    <div class="col-md-8">  <!-- Coluna do texto -->
+                        <div class="card-body">
+                            <h5 class="card-title">{{ review.filme }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                Nota: {{ "⭐" * review.nota }}
+                            </h6>
+                            <p class="card-text">{{ review.comentario }}</p>
+                            <footer class="blockquote-footer mt-2">
+                                <cite>{{ review.autor }}</cite>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% endfor %}
-    </ul>
-    <a href="{{ url_for('cadastrar') }}">Adicionar Filme</a>
+    </div>
 {% endblock %}
