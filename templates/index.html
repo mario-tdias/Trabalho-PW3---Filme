@@ -1,16 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="mb-4">
-        <a href="{{ url_for('adicionar') }}" class="btn btn-primary">➕ Adicionar Review</a>
+<div class="container">
+    <!-- Botões de Ação (Adicionar + Ranking) -->
+    <div class="d-flex justify-content-between mb-4">
+        <a href="{{ url_for('adicionar') }}" class="btn btn-primary">
+            ➕ Adicionar Review
+        </a>
+        <a href="{{ url_for('ranking') }}" class="btn btn-warning">
+            🏆 Ver Ranking
+        </a>
     </div>
 
+    <!-- Lista de Reviews -->
     <div class="row">
         {% for review in reviews %}
         <div class="col-md-6 mb-4">
             <div class="card shadow">
-                <div class="row g-0">  <!-- Linha para imagem + texto -->
-                    <div class="col-md-4">  <!-- Coluna da imagem -->
+                <div class="row g-0">
+                    <div class="col-md-4">
                         <img 
                             src="{{ review.imagem }}" 
                             class="img-fluid rounded-start h-100" 
@@ -18,7 +26,7 @@
                             style="object-fit: cover;"
                         >
                     </div>
-                    <div class="col-md-8">  <!-- Coluna do texto -->
+                    <div class="col-md-8">
                         <div class="card-body">
                             <h5 class="card-title">{{ review.filme }}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">
@@ -35,4 +43,5 @@
         </div>
         {% endfor %}
     </div>
+</div>
 {% endblock %}

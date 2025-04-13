@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="mb-4">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+            ⬅️ Voltar para a Tela Principal
+        </a>
+    </div>
+    <h2 class="text-center mb-4">🏆 Ranking dos Filmes</h2>
+    <div class="row">
+        {% for review in reviews %}
+        <div class="col-md-6 mb-4">
+            <div class="card shadow">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ review.imagem }}" class="img-fluid rounded-start h-100" alt="{{ review.filme }}">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                #{{ loop.index }} - {{ review.filme }}
+                                <span class="badge bg-success ms-2">{{ review.nota }}⭐</span>
+                            </h5>
+                            <p class="card-text">{{ review.comentario }}</p>
+                            <footer class="blockquote-footer mt-2">
+                                <cite>{{ review.autor }}</cite>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -36,3 +36,47 @@ label, input, button {
     height: 100%;
     min-height: 200px;  /* Altura mínima para cards pequenos */
 }
+/* Estilo para o ranking */
+.badge {
+    font-size: 0.9em;
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+/* Efeito hover nos cards */
+.card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+}
+/* Estilização dos botões */
+.btn-primary {
+    background-color: #0d6efd;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: #000;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
