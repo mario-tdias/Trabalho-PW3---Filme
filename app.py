@@ -89,5 +89,32 @@ def ranking():
     reviews_ordenados = sorted(reviews, key=lambda x: x['nota'], reverse=True)
     return render_template('ranking.html', reviews=reviews_ordenados)
 
+# app.py
+@app.route('/buscar')
+def buscar():
+    termo = request.args.get('q', '').strip().lower()
+    
+    if not termo:
+        return redirect(url_for('index'))
+    
+    resultados = [
+        review for review in reviews 
+        if termo in review['filme'].lower() or 
+           termo in review['comentario'].lower() or
+           termo in review['autor'].lower()
+    ]
+    
+    return render_template('busca.html', resultados=resultados, termo=termo)
+
+@app.route('/filme/<nome_filme>')
+def detalhes_filme(nome_filme):
+    # Encontra o filme pelo nome exato (case-sensitive)
+    filme = next((f for f in reviews if f['filme'] == nome_filme), None)
+    
+    if filme:
+        return render_template('detalhes_filme.html', filme=filme)
+    else:
+        return "Filme não encontrado", 404
+
 if __name__ == '__main__':
     app.run(debug=True)
