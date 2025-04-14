@@ -1,37 +1,94 @@
 {% extends "base.html" %}
+{% block title %}Ranking de Filmes{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="mb-4">
-        <a href="{{ url_for('index') }}" class="btn btn-secondary">
-            ⬅️ Voltar para a Tela Principal
-        </a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="display-5 fw-bold"><i class="fas fa-trophy me-2"></i>Ranking de Filmes</h1>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-1"></i>Voltar
+    </a>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-{{ 'dark' if theme == 'dark' else 'primary' }}">
+                    <tr>
+                        <th scope="col" width="50">#</th>
+                        <th scope="col">Filme</th>
+                        <th scope="col" width="120">Nota</th>
+                        <th scope="col" width="120">Curtidas</th>
+                        <th scope="col" width="150">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for review in reviews %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="{{ review.imagem }}" class="rounded me-3" width="60" height="90" style="object-fit: cover;">
+                                <div>
+                                    <h6 class="mb-1">{{ review.filme }}</h6>
+                                    <div class="text-muted small">
+                                        {% for categoria in review.categorias[:2] %}
+                                        <span class="badge bg-secondary me-1">{{ categoria }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-{{ 'warning' if review.nota >= 4 else 'info' }}">
+                                {{ review.nota }} <i class="fas fa-star"></i>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge bg-danger">
+                                <i class="fas fa-heart me-1"></i> {{ review.likes }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('detalhes_filme', filme_id=review.id) }}" class="btn btn-sm btn-outline-primary me-1">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button class="btn btn-sm btn-outline-success">
+                                <i class="fas fa-share"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-    <h2 class="text-center mb-4">🏆 Ranking dos Filmes</h2>
-    <div class="row">
-        {% for review in reviews %}
-        <div class="col-md-6 mb-4">
-            <div class="card shadow">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="{{ review.imagem }}" class="img-fluid rounded-start h-100" alt="{{ review.filme }}">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                #{{ loop.index }} - {{ review.filme }}
-                                <span class="badge bg-success ms-2">{{ review.nota }}⭐</span>
-                            </h5>
-                            <p class="card-text">{{ review.comentario }}</p>
-                            <footer class="blockquote-footer mt-2">
-                                <cite>{{ review.autor }}</cite>
-                            </footer>
-                        </div>
-                    </div>
-                </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <h2 class="display-4 text-primary">{{ reviews|length }}</h2>
+                <p class="mb-0">Reviews no total</p>
             </div>
         </div>
-        {% endfor %}
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <h2 class="display-4 text-warning">{{ (reviews|selectattr('nota', 'equalto', 5)|list)|length }}</h2>
+                <p class="mb-0">Notas máximas (5★)</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <h2 class="display-4 text-success">{{ (reviews|selectattr('nota', '>=', 4)|list)|length }}</h2>
+                <p class="mb-0">Filmes recomendados</p>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

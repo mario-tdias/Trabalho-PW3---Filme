@@ -1,37 +1,59 @@
-<!-- templates/busca.html -->
 {% extends "base.html" %}
+{% block title %}Busca: {{ termo }}{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>Resultados para: <span class="text-muted">{{ termo }}</span></h2>
-    
-    {% if resultados %}
-        <div class="row mt-4">
-            {% for review in resultados %}
-            <div class="col-md-6 mb-4">
-                <div class="card shadow">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="{{ review.imagem }}" class="img-fluid rounded-start h-100" alt="{{ review.filme }}">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ review.filme }}</h5>
-                                <p class="card-text">{{ review.comentario|truncate(150) }}</p>
-                                <a href="{{ url_for('detalhes_filme', nome_filme=review.filme) }}" class="btn btn-sm btn-primary">
-                                    Ver detalhes
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="display-5 fw-bold"><i class="fas fa-search me-2"></i>Resultados da Busca</h1>
+        <p class="lead mb-0">Termo pesquisado: <span class="text-primary">"{{ termo }}"</span></p>
+    </div>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-1"></i>Voltar
+    </a>
+</div>
+
+{% if resultados %}
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for review in resultados %}
+    <div class="col">
+        <div class="card h-100 shadow-sm movie-card">
+            <div class="position-relative">
+                <img src="{{ review.imagem }}" class="card-img-top" alt="{{ review.filme }}" style="height: 200px; object-fit: cover;">
+                <span class="position-absolute top-0 end-0 bg-{{ 'warning' if review.nota >= 4 else 'secondary' }} text-dark p-2">
+                    {{ review.nota }} <i class="fas fa-star"></i>
+                </span>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ review.filme }}</h5>
+                <div class="mb-2">
+                    {% for categoria in review.categorias[:3] %}
+                    <span class="badge bg-info me-1">{{ categoria }}</span>
+                    {% endfor %}
+                </div>
+                <p class="card-text">{{ review.comentario[:100] }}...</p>
+            </div>
+            <div class="card-footer bg-transparent">
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Por {{ review.autor }}</small>
+                    <a href="{{ url_for('detalhes_filme', filme_id=review.id) }}" class="btn btn-sm btn-primary">
+                        Ver detalhes
+                    </a>
                 </div>
             </div>
-            {% endfor %}
         </div>
-    {% else %}
-        <div class="alert alert-warning mt-4">
-            Nenhum filme encontrado para "{{ termo }}".
-        </div>
-    {% endif %}
+    </div>
+    {% endfor %}
 </div>
+{% else %}
+<div class="card shadow text-center py-5">
+    <div class="card-body">
+        <i class="fas fa-search fa-4x mb-4 text-muted"></i>
+        <h3>Nenhum resultado encontrado</h3>
+        <p class="text-muted mb-4">Não encontramos nenhum filme correspondente à sua busca.</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">
+            <i class="fas fa-home me-1"></i> Voltar para a página inicial
+        </a>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

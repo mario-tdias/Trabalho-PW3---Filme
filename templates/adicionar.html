@@ -1,60 +1,100 @@
 {% extends "base.html" %}
+{% block title %}Adicionar Review{% endblock %}
 
 {% block content %}
-<div class="container">
-    <a href="{{ url_for('index') }}" class="btn btn-secondary">
-        ⬅️ Voltar para a Tela Principal
-    </a>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-body">
-                    <h2 class="card-title mb-4 text-center">Adicionar Review</h2>
-                    <form method="POST">
-                        <!-- Campo Filme -->
-                        <div class="mb-3">
-                            <label for="filme" class="form-label">Filme:</label>
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Adicionar Review</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="filme" class="form-label">Título do Filme*</label>
                             <input type="text" class="form-control" id="filme" name="filme" required>
                         </div>
                         
-                        <!-- Campo Autor -->
-                        <div class="mb-3">
-                            <label for="autor" class="form-label">Seu Nome:</label>
+                        <div class="col-md-6">
+                            <label for="autor" class="form-label">Seu Nome*</label>
                             <input type="text" class="form-control" id="autor" name="autor" required>
                         </div>
                         
-                        <!-- Campo Nota -->
-                        <div class="mb-3">
-                            <label for="nota" class="form-label">Nota (1-5):</label>
+                        <div class="col-md-4">
+                            <label for="nota" class="form-label">Nota (1-5)*</label>
                             <select class="form-select" id="nota" name="nota" required>
-                                <option value="1">⭐</option>
-                                <option value="2">⭐⭐</option>
-                                <option value="3">⭐⭐⭐</option>
-                                <option value="4">⭐⭐⭐⭐</option>
-                                <option value="5">⭐⭐⭐⭐⭐</option>
+                                <option value="" disabled selected>Selecione...</option>
+                                <option value="1">1 ★</option>
+                                <option value="2">2 ★★</option>
+                                <option value="3">3 ★★★</option>
+                                <option value="4">4 ★★★★</option>
+                                <option value="5">5 ★★★★★</option>
                             </select>
                         </div>
                         
-                        <!-- Campo Comentário -->
-                        <div class="mb-3">
-                            <label for="comentario" class="form-label">Review:</label>
-                            <textarea class="form-control" id="comentario" name="comentario" rows="4" required></textarea>
+                        <div class="col-md-8">
+                            <label for="categorias" class="form-label">Categorias*</label>
+                            <input type="text" class="form-control" id="categorias" name="categorias" 
+                                   placeholder="Ex: Ação, Drama, Ficção Científica" required>
                         </div>
                         
-                        <!-- Campo Imagem -->
-                        <div class="mb-3">
-                            <label for="imagem" class="form-label">URL da Imagem:</label>
-                            <input type="url" class="form-control" id="imagem" name="imagem" placeholder="https://exemplo.com/capa.jpg" required>
+                        <div class="col-12">
+                            <label for="comentario" class="form-label">Seu Review*</label>
+                            <textarea class="form-control" id="comentario" name="comentario" rows="5" required></textarea>
                         </div>
                         
-                        <!-- Botão Submit -->
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg">Enviar Review</button>
+                        <div class="col-md-6">
+                            <label for="imagem" class="form-label">Capa do Filme (Upload)</label>
+                            <input class="form-control" type="file" id="imagem" name="imagem" accept="image/*">
+                            <div class="form-text">Formatos: JPG, PNG, WEBP (max 5MB)</div>
                         </div>
-                    </form>
-                </div>
+                        
+                        <div class="col-md-6">
+                            <label for="imagem_url" class="form-label">OU URL da Imagem</label>
+                            <input type="url" class="form-control" id="imagem_url" name="imagem_url" 
+                                   placeholder="https://exemplo.com/imagem.jpg">
+                        </div>
+                        
+                        <div class="col-12">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="fas fa-save me-2"></i>Publicar Review
+                                </button>
+                                <a href="{{ url_for('index') }}" class="btn btn-outline-secondary px-4">
+                                    Cancelar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const imagemInput = document.getElementById('imagem');
+    if (imagemInput) {
+        imagemInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('imagem_url').value = '';
+            }
+        });
+    }
+    
+    const imagemUrl = document.getElementById('imagem_url');
+    if (imagemUrl) {
+        imagemUrl.addEventListener('input', function() {
+            if (this.value) {
+                document.getElementById('imagem').value = '';
+            }
+        });
+    }
+});
+</script>
 {% endblock %}

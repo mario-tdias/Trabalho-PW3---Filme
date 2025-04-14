@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}{{ filme.filme }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Início</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ filme.filme }}</li>
+                </ol>
+            </nav>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm">
+                <i class="fas fa-arrow-left me-1"></i>Voltar
+            </a>
+        </div>
+        
+        <div class="card shadow mb-4">
+            <div class="row g-0">
+                <div class="col-md-5">
+                    <img src="{{ filme.imagem }}" class="img-fluid rounded-start h-100" alt="{{ filme.filme }}" style="object-fit: cover;">
+                </div>
+                <div class="col-md-7">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h1 class="card-title mb-1">{{ filme.filme }}</h1>
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="star-rating me-2">
+                                        {% for i in range(5) %}
+                                            {% if i < filme.nota %}
+                                                <i class="fas fa-star text-warning"></i>
+                                            {% else %}
+                                                <i class="far fa-star text-warning"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <span class="badge bg-{{ 'warning' if filme.nota >= 4 else 'secondary' }} text-dark">
+                                        {{ filme.nota }}/5
+                                    </span>
+                                </div>
+                                <div class="mb-3">
+                                    {% for categoria in filme.categorias %}
+                                    <span class="badge bg-info me-1">{{ categoria }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <a href="{{ url_for('like', filme_id=filme.id) }}" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-heart me-1"></i> {{ filme.likes }}
+                            </a>
+                        </div>
+                        
+                        <div class="card-text mb-4">
+                            <p class="lead">{{ filme.comentario }}</p>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-muted">
+                                    <i class="fas fa-user me-1"></i> {{ filme.autor }}
+                                </small>
+                                <small class="text-muted ms-3">
+                                    <i class="fas fa-calendar me-1"></i> {{ filme.data }}
+                                </small>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-share-alt me-1"></i> Compartilhar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card shadow">
+            <div class="card-header bg-{{ 'dark' if theme == 'dark' else 'light' }}">
+                <h5 class="mb-0"><i class="fas fa-comments me-2"></i>Comentários (3)</h5>
+            </div>
+            <div class="card-body">
+                <form class="mb-4">
+                    <div class="mb-3">
+                        <textarea class="form-control" rows="3" placeholder="Adicione seu comentário..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-paper-plane me-1"></i> Enviar
+                    </button>
+                </form>
+                
+                <div class="comment-list">
+                    <div class="d-flex mb-4">
+                        <div class="flex-shrink-0 me-3">
+                            <img src="https://via.placeholder.com/50" class="rounded-circle" width="50" alt="Usuário">
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="mt-0 mb-1">João Silva</h6>
+                                <small class="text-muted">2 dias atrás</small>
+                            </div>
+                            <p class="mb-1">Concordo plenamente com sua análise! O filme é realmente incrível.</p>
+                            <a href="#" class="text-decoration-none small">Responder</a>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 me-3">
+                            <img src="https://via.placeholder.com/50" class="rounded-circle" width="50" alt="Usuário">
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="mt-0 mb-1">Maria Oliveira</h6>
+                                <small class="text-muted">1 semana atrás</small>
+                            </div>
+                            <p class="mb-1">Ótima review! Você poderia recomendar outros filmes do mesmo diretor?</p>
+                            <a href="#" class="text-decoration-none small">Responder</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
